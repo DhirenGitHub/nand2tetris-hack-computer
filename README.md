@@ -1,4 +1,3 @@
-# nand2tetris-hack-computer
 # Computer Fundamentals: Building a Computer from Scratch
 
 A comprehensive coursework project that builds a complete computer system from first principles, starting with basic logic gates and culminating in a fully functional CPU with assembly programs.
