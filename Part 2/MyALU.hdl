@@ -1,0 +1,71 @@
+
+/**
+ * MyALU: A custom-designed Arithmetic Logic Unit that replicates the functions of the Nand2Tetris ALU 
+ * while adding extra features and employing a different set of control bits.
+ * 
+ * Operations supported include:
+ * Arithmetic: x + y, x - y, y - x, x + 1, y + 1, x - 1, y - 1
+ * Logical: x AND y, x OR y, x XOR y
+ * Unary: 0, 1, -1, x, y, -x, -y, !x, !y
+ * 
+ * Control inputs: 6 control bits (zx, nx, zy, ny, f, no) determine the operation performed.
+ * 
+ * Outputs:
+ * - `zr`: A flag set to 1 if the output is zero; otherwise, it is 0.
+ * - `ng`: A flag set to 1 if the output is negative (most significant bit is 1); otherwise, it is 0.
+ * 
+ * The ALU takes two 16-bit inputs (`x` and `y`), processes them based on the control bits, and outputs a 
+ * 16-bit result along with the `zr` and `ng` flags.
+ */
+
+
+// Implementation: the ALU logic manipulates the x and y inputs
+
+
+CHIP MyALU {
+    IN  
+        x[16], y[16],  // 16-bit inputs        
+        C0, // Control Bit 0 (Least significant) 
+        C1, // Control Bit 1
+        C2, // Control Bit 2
+        C3,  // Control Bit 3
+		C4;  // Control Bit 4 (Most significant - 5th Control bit)
+        
+
+    OUT 
+        out[16], // 16-bit output
+        zr, // 1 if (out == 0), 0 otherwise
+        ng; // 1 if (out < 0),  0 otherwise
+
+    PARTS:
+    Add16(a=false, b[0]=true, out=one); // 1
+    Not16(in=one, out=fornegone); // to get -1
+    Inc16(in=fornegone, out=negone); //-1
+    Not16(in=x, out=notX); // negated X
+    Not16(in=y, out=notY); // negated Y
+    Inc16(in=notX, out=negX); // negative X
+    Inc16(in=notY, out=negY); // negative Y
+    Add16(a=x, b=one, out=Xplus1); // x+1
+    Add16(a=y, b=one, out=Yplus1); // y+1
+    Add16(a=x, b=negone, out=Xminus1); // x-1
+    Add16(a=y, b=negone, out=Yminus1); // y-1
+    Add16(a=x, b=y, out=XplusY); // x+y
+    Add16(a=x, b=negY, out=XminusY); // x-y
+    Add16(a=y, b=negX, out=YminusX); // y-x
+    And16(a=x, b=y, out=XandY); // x and y
+    Or16(a=x, b=y, out=XorY); // X or Y
+    Xor16(a=x, b=y, out=XxorY); // X xor Y
+
+    Mux8Way16(a=false, b=one, c=negone, d=x, e=y, f=notX, g=notY, h=negX, sel[0]=C0, sel[1]=C1, sel[2]=C2, out=mux1);
+    Mux8Way16(a=negY, b=Xplus1, c=Yplus1, d=Xminus1, e=Yminus1, f=XplusY, g=XminusY, h=YminusX, sel[0]=C0, sel[1]=C1, sel[2]=C2, out=mux2);
+    Mux4Way16(a=XandY, b=XorY, c=XxorY, d=false, sel[0]=C0, sel[1]=C1, out=mux3);
+    Mux4Way16(a=mux1, b=mux2, c=mux3, d=false, sel[0]=C3, sel[1]=C4, out=out, out[15]=output1, out[0..7]=output2, out[8..15]=output3);
+
+      Or8Way(in=output2, out=zrl);
+      Or8Way(in=output3, out=zrr);
+      Or(a=zrl, b=zrr, out=nzr);
+      Not(in=nzr, out=zr);
+
+      And(a=output1, b=true, out=ng);
+
+}

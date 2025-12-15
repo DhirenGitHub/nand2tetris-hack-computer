@@ -1,0 +1,15 @@
+//Decision: A chip that outputs 1 (F = 1) only when both A and B are 1,
+
+CHIP Tessa {
+    IN 
+        A, B, C, D;  // Four 1-bit inputs
+
+    OUT 
+        F;           // 1-bit output based on F = AB
+
+    PARTS:
+    // Implement the AND gate logic for F = A AND B
+    And(a=A, b=B, out=F);
+}
+
+
