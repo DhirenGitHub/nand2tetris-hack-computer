@@ -131,12 +131,10 @@ Complete implementation of the HACK computer architecture:
 - Executes machine code programs
 - Tested with Add, Max, and Rect programs
 
-### 3.3 Design Documentation
+### 3.3 Design
 
-Comprehensive documentation including:
-- Detailed circuit diagrams showing component interconnections
-- Justification of design decisions
-- Analysis of architectural trade-offs
+<img width="1653" height="861" alt="image" src="https://github.com/user-attachments/assets/6974f989-f494-4004-9b0e-239f8fbf28fa" />
+
 
 ## Technologies & Tools
 
@@ -175,19 +173,3 @@ For assembly programs:
 1. Use the Nand2Tetris Assembler to convert `.asm` to `.hack`
 2. Load machine code in the CPU Emulator
 3. Execute and verify results
-
-## Course Context
-
-Completed as part of Year 1 Computer Fundamentals coursework, demonstrating practical application of:
-- Digital logic design
-- Computer organization
-- Low-level programming
-- Hardware-software co-design
-
-## License
-
-This is educational coursework. Feel free to reference for learning purposes, but please complete your own coursework independently.
-
----
-
-**Note:** This project uses the Nand2Tetris platform and follows its architectural specifications. Visit [nand2tetris.org](https://www.nand2tetris.org/) for more information about the course and tools.
